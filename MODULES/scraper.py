@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import logging
+import config
 
 logging.basicConfig(filename='scraper.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -10,7 +11,7 @@ def finder(homepage_url):
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        pages = ['contact', 'about', 'reach', 'find', 'support', 'help', 'location', 'address', 'connect', 'team', 'us']
+        pages = config.page_keywords
         links = []
 
         for a_tag in soup.find_all('a', href=True):
@@ -46,19 +47,3 @@ def get_content(url):
     except requests.RequestException as e:
         logging.error(f"Error occurred {e}")
         return None
-
-def main():
-    url = "https://www.fiven.eu/"
-    urls = finder(url)
-
-    if urls and not "Contact page not found." in urls:
-        for i in urls:
-            logging.info(f"URL: {i}")
-            content = get_content(i)
-            if content:
-                logging.info(content)
-    else:
-        logging.error(content[0])
-
-if __name__ == "__main__":
-    main()
