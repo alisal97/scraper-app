@@ -7,7 +7,7 @@ app = Flask (__name__)
 
 logging.basicConfig(filename='flask_app.log', filemode='w', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-@app.route('/scrape', methods=['POST'])
+@app.route('/scraper-app', methods=['POST'])
 def scrape():
     data = request.json
     if not data or 'urls' not in data:
